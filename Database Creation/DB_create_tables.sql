@@ -1,3 +1,4 @@
+Create database bank_database;
 USE bank_database;
 
 -- Creating `user` table first, as it is referenced by other tables
