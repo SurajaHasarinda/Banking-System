@@ -6,7 +6,7 @@ const app = express();
 const db = mysql.createConnection({
     host: 'localhost',
     user: "root",
-    password: "2003",
+    password: "1112",
     database: "bank_database"
 })
 
