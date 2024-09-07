@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBillTransfer, faBuildingColumns, faClockRotateLeft, faGear, faHouseUser, faArrowRightFromBracket, faCircleQuestion, faCaretRight, faHandHoldingDollar, faSackDollar} from '@fortawesome/free-solid-svg-icons'
-import './DashboardSidebar.css';
+import { faMoneyBillTransfer, faWallet, faBuildingColumns, faClockRotateLeft, faGear, faHouseUser, faArrowRightFromBracket, faCircleQuestion, faCaretRight, faHandHoldingDollar, faSackDollar} from '@fortawesome/free-solid-svg-icons'
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import './UserDashboard.css';
+import Home from '../home/Home';
+import Notification from './notification/Notification';
 
 const DashboardSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true);
+  const [isLoansOpen, setLoansOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarClosed(!isSidebarClosed);
+  const toggleLoans = () => setLoansOpen(!isLoansOpen);
 
   return (
     <div className="body">
@@ -32,10 +37,17 @@ const DashboardSidebar = () => {
             
             <ul className="menu-links">
               <li className="nav-link">
-                <a href="#">
+                <Link to="/home">
                     <FontAwesomeIcon icon={faHouseUser} className='icon'/>
-                    <span className="text nav-text">Dashboard</span>
-                </a>
+                    <span className="text nav-text">Home</span>
+                </Link>
+              </li>
+
+              <li className="nav-link">
+                <Link to="/home">
+                    <FontAwesomeIcon icon={faWallet} className='icon'/>
+                    <span className="text nav-text">Account Details</span>
+                </Link>
               </li>
 
               <li className="nav-link">
@@ -66,17 +78,18 @@ const DashboardSidebar = () => {
                 </a>
               </li>
 
-              <li className="nav-link">
-                <a href="#">
-                    <FontAwesomeIcon icon={faGear} className='icon'/>
-                    <span className="text nav-text">Settings</span>
-                </a>
-              </li>
 
             </ul>
           </div>
 
           <div className="bottom-content">
+            <li className="nav-link">
+              <a href="#">
+                  <FontAwesomeIcon icon={faGear} className='icon'/>
+                  <span className="text nav-text">Settings</span>
+              </a>
+            </li>
+
             <li>
               <a href="#">
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className='icon'/>
@@ -96,7 +109,15 @@ const DashboardSidebar = () => {
       </nav>
 
       <section className="home">
-        <div className="text">Welcome, Suraja!</div>
+        <div className="top-bar">
+          <div className="text">Welcome, Suraja!</div>
+          <div className="notification"><Notification/></div>
+        </div>
+
+        <Routes>
+            <Route path="/home" element={<Home />} />
+            {/* Add other routes here */}
+        </Routes>
       </section>
     </div>
   );
