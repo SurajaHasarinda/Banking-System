@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyBillTransfer, faWallet, faBuildingColumns, faClockRotateLeft, faGear, faHouseUser, faArrowRightFromBracket, faCircleQuestion, faCaretRight, faHandHoldingDollar, faSackDollar} from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './UserDashboard.css';
-import Home from '../home/Home';
 import Notification from './notification/Notification';
+import Home from '../home/Home';
+
 
 const DashboardSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true);
@@ -67,14 +68,7 @@ const DashboardSidebar = () => {
               <li className="nav-link">
                 <a href="#">
                     <FontAwesomeIcon icon={faSackDollar} className='icon'/>
-                    <span className="text nav-text">Online Loan</span>
-                </a>
-              </li>
-
-              <li className="nav-link">
-                <a href="#">
-                    <FontAwesomeIcon icon={faHandHoldingDollar} className='icon'/>
-                    <span className="text nav-text">Loan Repayment</span>
+                    <span className="text nav-text">Loans</span>
                 </a>
               </li>
 
