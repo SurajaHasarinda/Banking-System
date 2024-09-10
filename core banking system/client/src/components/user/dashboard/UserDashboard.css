@@ -283,3 +283,10 @@ header .image-text .profession{
     height: 100vh;
     width: calc(100% - 78px);
 }
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
