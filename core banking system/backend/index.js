@@ -12,8 +12,6 @@ const db = mysql.createConnection({
     database: "bank_database"
 })
 
-// If there is an auth problem
-//ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '3.yGy4CjUFQT@g';
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
