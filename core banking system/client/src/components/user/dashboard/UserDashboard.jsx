@@ -7,6 +7,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import {Routes, Link, useNavigate, Route} from 'react-router-dom';
+import { logout } from '../../../services/auth';
+
 import './UserDashboard.css';
 import Notification from './notification/Notification';
 import Home from '../home/Home';
@@ -22,11 +24,14 @@ import Settings from '../settings/Settings';
 const DashboardSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true);
   const navigate = useNavigate();
-  const userName = JSON.parse(localStorage.getItem('user')).name;
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userName = user.username || 'User'; // Fallback to 'User' if username is not found
+
   const toggleSidebar = () => setSidebarClosed(!isSidebarClosed);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    logout();
     navigate('/login');
   };
 
@@ -113,7 +118,7 @@ const DashboardSidebar = () => {
 
       <section className="home">
         <div className="top-bar">
-          <div className="text">Welcome, {userName}!</div>
+          <div className="text">Welcome, {userName}</div>
           <div className="notification"><Notification/></div>
         </div>
 

@@ -81,11 +81,11 @@ app.get("/recent_transactions", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const { username, password } = req.body;
+    const { user_name, password } = req.body;
     try {
       const [rows] = await db.query(
         "SELECT * FROM user WHERE user_name = ? AND password = ?",
-        [username, password]
+        [user_name, password]
       );
       if (rows.length > 0) {
         const user = rows[0];
@@ -93,7 +93,8 @@ app.post("/login", async (req, res) => {
             success: true, 
             user: { 
                 id: user.user_id, 
-                username: user.user_name, role: user.role 
+                user_name: user.user_name, 
+                role: user.role 
             } 
         });
       } else {
@@ -101,6 +102,44 @@ app.post("/login", async (req, res) => {
       }
     } catch (err) {
       console.error('Error during login:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  app.get("/loan_details", async (req, res) => {
+    const userId = req.query.userId;
+    try {
+      const [rows] = await db.query(`
+        SELECT 
+            l.loan_id, 
+            l.loan_type, 
+            l.amount, 
+            l.interest_rate,
+            COALESCE(ply.penalty_amount, 0) AS penalty_amount
+        FROM
+            loan l
+            JOIN account a ON l.account_id = a.account_id
+            JOIN customer c ON a.customer_id = c.customer_id
+            JOIN user u ON c.user_id = u.user_id
+            LEFT JOIN (
+                SELECT 
+                    li.loan_id, 
+                    lp.instalment_id, 
+                    pt.penalty_amount
+                FROM
+                    loan_installment li
+                    LEFT JOIN loan_payment lp ON li.installment_id = lp.instalment_id
+                    LEFT JOIN penalty p ON lp.penalty_id = p.penalty_id
+                    LEFT JOIN penalty_types pt ON p.penalty_type_id = pt.penalty_type_id
+            ) AS ply ON l.loan_id = ply.loan_id
+        WHERE
+            u.user_id = ?
+        GROUP BY 
+            l.loan_id, l.loan_type, l.amount, l.interest_rate, ply.penalty_amount
+      `, [userId]);
+      res.json(rows);
+    } catch (err) {
+      console.error('Error fetching loan details:', err);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
