@@ -1,11 +1,13 @@
 # Ignore .env file
 .env
+backend/.env
 
 # Ignore node_modules
 node_modules/
 
 # Ignore package-lock.json
 package-lock.json
+client/package-lock.json
 
 # Ignore debug logs
 npm-debug.log*

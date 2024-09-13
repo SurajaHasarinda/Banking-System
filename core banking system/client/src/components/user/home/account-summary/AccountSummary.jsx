@@ -29,21 +29,21 @@ export default function PieChartWithCenterLabel() {
   const [error, setError] = useState(null); // State to handle errors
   const [loading, setLoading] = useState(true); // State to handle loading
   const [chartSize, setChartSize] = useState({ width: 500, height: 250 }); // Responsive chart size
-
+  const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
   // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/accounts_summary');
+        const response = await axios.get(`http://localhost:8800/accounts_summary?customer_id=${userId}`);
         const fetchedData = response.data;
 
         // Transform the data
         if (fetchedData.length > 0) {
           const accountData = fetchedData[0];
           const transformedData = [
-            { value: accountData.savings_account_balance, label: 'Savings' },
-            { value: accountData.checking_account_balance, label: 'Checking' },
-            { value: accountData.fd_balance, label: 'Fixed Deposits' }
+            { value: parseFloat(accountData.savings_account_balance) || 0, label: 'Savings' },
+            { value: parseFloat(accountData.checking_account_balance) || 0, label: 'Checking' },
+            { value: parseFloat(accountData.fd_balance) || 0, label: 'Fixed Deposits' }
           ];
           setData(transformedData);
 
@@ -59,8 +59,10 @@ export default function PieChartWithCenterLabel() {
       }
     };
 
-    fetchData();
-  }, []);
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
 
   // Adjust chart size based on window size
   useEffect(() => {
