@@ -7,7 +7,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+
+
+
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -72,3 +79,28 @@ app.get("/recent_transactions", async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    try {
+      const [rows] = await db.query(
+        "SELECT * FROM user WHERE user_name = ? AND password = ?",
+        [username, password]
+      );
+      if (rows.length > 0) {
+        const user = rows[0];
+        res.json({ 
+            success: true, 
+            user: { 
+                id: user.user_id, 
+                username: user.user_name, role: user.role 
+            } 
+        });
+      } else {
+        res.json({ success: false });
+      }
+    } catch (err) {
+      console.error('Error during login:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
