@@ -1,3 +1,4 @@
+-- Active: 1725907957738@@127.0.0.1@3306@bank_database
 -- Create database and use it
 DROP DATABASE IF EXISTS bank_database;
 CREATE DATABASE bank_database;
