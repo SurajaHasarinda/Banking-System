@@ -1,3 +1,4 @@
+
 -- Create database and use it
 DROP DATABASE IF EXISTS bank_database;
 CREATE DATABASE bank_database;
