@@ -34,7 +34,7 @@ export default function PieChartWithCenterLabel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/accounts_summary');
+        const response = await axios.get('http://localhost:8800/accounts_summary/1'); // TODO: make the customer ID dynamic
         const fetchedData = response.data;
 
         // Transform the data

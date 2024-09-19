@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -62,5 +63,33 @@ app.get("/recent_transactions/:customerId", (req, res) => {
     db.query(q, [customerId], (err, data)=>{
         if(err) return res.json(err)
         return res.json(data)
+    });
+});
+
+// get user information
+app.get("/user_info/:userId", (req, res) => {
+    const userId = req.params.userId;
+
+    const q = "SELECT * FROM bank_database.user_info WHERE user_id = ?"
+
+    db.query(q, [userId], (err, data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    });
+});
+
+// change user information
+app.put("/user_info/:userId", (req, res) => {
+    const userId = req.params.userId;
+    const { username, email, address, mobileNumber, landlineNumber } = req.body;
+
+    const q = "CALL update_user_info(?, ?, ?, ?, ?, ?);";
+
+    db.query(q, [userId, username, email, address, mobileNumber, landlineNumber], (err, data) => {
+        if (err) {
+            console.error('Error executing stored procedure:', err);
+            return res.status(500).json({ error: 'Database query failed', details: err });
+        }
+        return res.json(data);
     });
 });
