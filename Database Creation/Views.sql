@@ -1,5 +1,5 @@
 
--- Suraja
+-- get the account summary
 CREATE VIEW `accounts_summary` AS
 SELECT 
     c.customer_id,
@@ -15,7 +15,7 @@ GROUP BY
     c.customer_id;
 
 
-
+-- get the transaction history
 CREATE VIEW `transaction_history` AS
 SELECT 
     c.customer_id,
@@ -32,3 +32,17 @@ JOIN
 JOIN 
     transaction t ON a.account_id = t.account_id
 ORDER BY t.date DESC;
+
+-- get the user information
+CREATE VIEW user_info AS
+SELECT 
+    u.user_id,
+    u.user_name AS username,
+    u.email,
+    c.mobile_number,
+    c.landline_number,
+    c.address
+FROM 
+    user u
+JOIN 
+    customer c ON u.user_id = c.user_id;
