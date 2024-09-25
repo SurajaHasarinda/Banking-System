@@ -78,7 +78,7 @@ app.get("/user_info/:userId", (req, res) => {
     });
 });
 
-// change user information
+// update user information
 app.put("/user_info/:userId", (req, res) => {
     const userId = req.params.userId;
     const { username, email, address, mobileNumber, landlineNumber } = req.body;
