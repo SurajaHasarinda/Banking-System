@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './UserDashboard.css';
 import Notification from './notification/Notification';
 import Home from '../home/Home';
+import MoneyTransfer1 from '../MoneyTransfer/MoneyTransfer1';
 
 
 const DashboardSidebar = () => {
@@ -52,10 +53,10 @@ const DashboardSidebar = () => {
               </li>
 
               <li className="nav-link">
-                <a href="#">
+                <Link to="Money-transfer">
                     <FontAwesomeIcon icon={faMoneyBillTransfer} className='icon'/>
                     <span className="text nav-text">Money Transfer</span>
-                </a>
+                </Link>
               </li>
 
               <li className="nav-link">
@@ -110,6 +111,7 @@ const DashboardSidebar = () => {
 
         <Routes>
             <Route path="/home" element={<Home />} />
+            <Route path="/Money-transfer" element={<MoneyTransfer1 />} />
             {/* Add other routes here */}
         </Routes>
       </section>
