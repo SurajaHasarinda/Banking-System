@@ -290,3 +290,16 @@ header .image-text .profession{
     align-items: center;
     padding: 10px 20px;
 }
+
+.sub-menu {
+    margin-left: 20px;
+    display: none;
+  }
+  
+  .nav-link:hover .sub-menu {
+    display: block;
+  }
+  
+  .sub-menu li {
+    margin: 5px 0;
+  }

@@ -1,8 +1,15 @@
 import express from 'express';
-import mysql from 'mysql';
+//import mysql from 'mysql';
+import mysql from 'mysql2/promise';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const db = mysql.createConnection({
@@ -12,7 +19,7 @@ const db = mysql.createConnection({
     database: "bank_database"
 })
 
-db.connect((err) => {
+db.getConnection((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
@@ -20,30 +27,40 @@ db.connect((err) => {
     console.log('Connected to the database.');
 });
 
+app.listen(8800, () => {
+    console.log('Connected to backend!.....Server is running on http://localhost:8800');
+  });
+
+// get methods //
+
 app.get("/",(req,res)=>{
     res.json("Hello this is the backend")
 })
 
-app.get("/accounts", (req, res) => {
-    const q = "SELECT * FROM account"
-    db.query(q, (err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-})
-
-app.listen(8800, () => {
-  console.log('Connected to backend!.....Server is running on http://localhost:8800');
+app.get("/accounts", async (req, res) => {
+    try {
+        const [rows] = await db.query("SELECT * FROM account");
+        res.json(rows);
+    } catch (err) {
+        console.error('Error fetching accounts:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
+
 // get account summary
-app.get("/accounts_summary", (req, res) => {
-    const q = "SELECT * FROM bank_database.accounts_summary WHERE customer_id = 2"
-    db.query(q, (err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-})
+app.get("/accounts_summary", async (req, res) => {
+    try {
+        const [rows] = await db.query(
+            "SELECT * FROM bank_database.accounts_summary WHERE customer_id = ?",
+            [req.query.customer_id]
+        );
+        res.json(rows);
+    } catch (err) {
+        console.error('Error fetching account summary:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 // get recent transactions
 app.get("/recent_transactions", (req, res) => {

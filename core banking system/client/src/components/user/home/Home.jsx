@@ -2,7 +2,7 @@ import React from 'react';
 import Graph2 from './account-summary/AccountSummary';
 import TransactionHistory from './recent-transactions/RecentTransactions';
 
-const Dashboard = () => {
+const Home = () => {
   return (
     <div className="home-container">
         <Graph2 />
@@ -11,4 +11,4 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard;
+export default Home;

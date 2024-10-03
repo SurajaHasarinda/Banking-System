@@ -15,11 +15,12 @@ GROUP BY
     c.customer_id;
 
 
-
+DROP VIEW IF EXISTS transaction_history;
 CREATE VIEW `transaction_history` AS
 SELECT 
     c.customer_id,
     t.transaction_id,
+    t.account_id,
     t.transaction_type,
     t.amount,
     t.date,
@@ -32,3 +33,4 @@ JOIN
 JOIN 
     transaction t ON a.account_id = t.account_id
 ORDER BY t.date DESC;
+
