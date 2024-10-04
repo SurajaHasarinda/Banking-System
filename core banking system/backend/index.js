@@ -143,3 +143,29 @@ app.post("/login", async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  app.get("/credit-limit", async (req, res) => {
+    const userId = req.query.userId;
+    console.log('User ID:', userId);
+    
+    if (!userId) {
+        return res.status(400).json({ error: "User ID is required" });
+    }
+
+    try {
+        const [rows] = await db.query(`
+            SELECT bank_database.credit_limit(?) AS credit_limit;
+        `, [userId]);
+
+        if (rows.length > 0 && rows[0].credit_limit !== null) {
+            const creditLimit = rows[0].credit_limit; // Assuming function returns correct value
+            res.json({ creditLimit });
+        } else {
+            res.json({ creditLimit: 0, message: "No fixed deposits found." });
+        }
+    } catch (err) {
+        console.error('Error fetching credit limit:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
