@@ -8,12 +8,16 @@ export default function TransactionHistoryCard() {
   const [transactions, setTransactions] = useState([]); // State to hold transaction data
   const [loading, setLoading] = useState(true); // State for loading
   const [error, setError] = useState(null); // State for errors
+  const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/recent_transactions');
-        setTransactions(response.data);
+        const response = await axios.get(`http://localhost:8800/recent_transactions?customer_id=${userId}`);
+        setTransactions(response.data.map(transaction => ({
+          ...transaction,
+          amount: parseFloat(transaction.amount) || 0
+        })));
       } catch (err) {
         console.error('Error fetching transactions:', err);
         setError('Failed to fetch transactions');
@@ -22,8 +26,10 @@ export default function TransactionHistoryCard() {
       }
     };
 
-    fetchData();
-  }, []);
+    if(userId){
+      fetchData();
+    }
+  }, [userId]);
 
   // Display loading or error message
   if (loading) return <div>Loading...</div>;
