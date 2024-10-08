@@ -1,6 +1,6 @@
 import React from 'react';
-import UserDashboard from './components/user/dashboard/UserDashboard';
 import { BrowserRouter as Router} from 'react-router-dom';
+import UserDashboard from './components/user/dashboard/UserDashboard';
 
 function App() {
   return (
