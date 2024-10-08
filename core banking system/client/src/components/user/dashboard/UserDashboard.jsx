@@ -5,15 +5,14 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './UserDashboard.css';
 import Notification from './notification/Notification';
 import Home from '../home/Home';
+import Settings from '../settings/Settings';
 
 
 const DashboardSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true);
-  const [isLoansOpen, setLoansOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarClosed(!isSidebarClosed);
-  const toggleLoans = () => setLoansOpen(!isLoansOpen);
-
+  
   return (
     <div className="body">
       <nav className={`sidebar ${isSidebarClosed ? 'close' : ''}`}>
@@ -28,9 +27,7 @@ const DashboardSidebar = () => {
               <span className="name">Trust Bank</span>
             </div>
           </div>
-
           <FontAwesomeIcon icon={faCaretRight} className='bx bx-chevron-right toggle' onClick={toggleSidebar}/>
-          
         </header>
 
         <div className="menu-bar">
@@ -78,10 +75,10 @@ const DashboardSidebar = () => {
 
           <div className="bottom-content">
             <li className="nav-link">
-              <a href="#">
+              <Link to="/settings">
                   <FontAwesomeIcon icon={faGear} className='icon'/>
                   <span className="text nav-text">Settings</span>
-              </a>
+              </Link>
             </li>
 
             <li>
@@ -110,7 +107,7 @@ const DashboardSidebar = () => {
 
         <Routes>
             <Route path="/home" element={<Home />} />
-            {/* Add other routes here */}
+            <Route path="/settings" element={<Settings />} />
         </Routes>
       </section>
     </div>

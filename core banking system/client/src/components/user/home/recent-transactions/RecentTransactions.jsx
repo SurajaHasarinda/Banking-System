@@ -12,7 +12,7 @@ export default function TransactionHistoryCard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/recent_transactions');
+        const response = await axios.get('http://localhost:8800/recent_transactions/1'); // TODO: make the customer ID dynamic
         setTransactions(response.data);
       } catch (err) {
         console.error('Error fetching transactions:', err);
