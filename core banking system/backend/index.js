@@ -78,7 +78,7 @@ app.get("/user_info/:userId", (req, res) => {
     });
 });
 
-// change user information
+// update user information
 app.put("/user_info/:userId", (req, res) => {
     const userId = req.params.userId;
     const { username, email, address, mobileNumber, landlineNumber } = req.body;
@@ -93,3 +93,68 @@ app.put("/user_info/:userId", (req, res) => {
         return res.json(data);
     });
 });
+
+// deposit funds
+// app.post('/withdraw', (req, res) => {
+//     const { accountNumber, amount, branchId, description } = req.body;
+
+//     // print the user inputs
+//     console.log('Withdrawal request:', req.body);
+
+//     const query = `
+//         CALL WithdrawFunds(?, ?, ?, ?, @result_message);
+//         SELECT @result_message AS result;
+//     `;
+
+//     // Execute the query with user inputs (but not @result_message, since it's an output parameter)
+//     db.query(query, [accountNumber, amount, branchId, description], (err, results) => {
+//         if (err) {
+//             console.error('Error processing withdrawal:', err);
+//             return res.status(500).json({ error: 'Error processing withdrawal', details: err.message });
+//         }
+
+//         // Retrieve the result message
+//         const resultMessage = results[1][0].result; // Access the second result set for the message
+//         res.status(200).json({ message: resultMessage }); // Send success response with the result message
+//     });
+// });
+
+
+app.post('/withdraw', (req, res) => {
+    const { accountNumber, amount, branchId, description } = req.body;
+
+    const callQuery = `CALL WithdrawFunds(?, ?, ?, ?, @result_message)`;
+    const selectQuery = `SELECT @result_message AS result`;
+
+    // execute the stored procedure call first
+    db.query(callQuery, [accountNumber, amount, branchId, description], (err) => {
+        if (err) {
+            console.error('Error processing withdrawal:', err);
+            return res.status(500).json({ error: 'Error processing withdrawal', details: err.message });
+        }
+
+        // execute the select query to get the result message
+        db.query(selectQuery, (err, results) => {
+            if (err) {
+                console.error('Error retrieving result message:', err);
+                return res.status(500).json({ error: 'Error retrieving result message', details: err.message });
+            }
+
+            // Log the results to see their structure
+            console.log('Results from SELECT query:', results[0].result);
+            
+
+            // Check if results are valid before accessing them
+            if (results.length > 0 && results[0]) {
+                const resultMessage = results[0].result; // Access the result message
+                return res.status(200).json({ message: resultMessage }); // Send success response with the result message
+            } else {
+                return res.status(400).json({ error: 'No result message returned from the stored procedure.' });
+            }
+        });
+    });
+});
+
+
+
+

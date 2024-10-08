@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS organization;
 CREATE TABLE organization (
   customer_id INT,
   name VARCHAR(100),
-  lisence_number VARCHAR(100),
+  license_number VARCHAR(100),
   PRIMARY KEY (customer_id),
   FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
 );

@@ -34,11 +34,14 @@ const Settings = () => {
   };
 
   const handleSave = async () => {
+    // TODO: Add validation logic here
     try {
       const response = await axios.put(`http://localhost:8800/user_info/${userId}`, personalInfo);
       console.log('Personal Info updated successfully:', response.data);
     } catch (error) {
       console.error('Error updating personal info:', error.response ? error.response.data : error.message);
+    } finally {
+      window.location.reload(); // Reload the page to reset the form
     }
   };
 

@@ -10,11 +10,9 @@ import Settings from '../settings/Settings';
 
 const DashboardSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true);
-  const [isLoansOpen, setLoansOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarClosed(!isSidebarClosed);
-  const toggleLoans = () => setLoansOpen(!isLoansOpen);
-
+  
   return (
     <div className="body">
       <nav className={`sidebar ${isSidebarClosed ? 'close' : ''}`}>
@@ -29,9 +27,7 @@ const DashboardSidebar = () => {
               <span className="name">Trust Bank</span>
             </div>
           </div>
-
           <FontAwesomeIcon icon={faCaretRight} className='bx bx-chevron-right toggle' onClick={toggleSidebar}/>
-          
         </header>
 
         <div className="menu-bar">
