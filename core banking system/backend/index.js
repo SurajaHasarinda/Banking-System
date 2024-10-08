@@ -17,15 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
-
-
-
-
-const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: "root",
+    password: "123456",
+    database: "bank_database"
 })
 
 db.getConnection((err) => {
@@ -72,6 +68,7 @@ app.get("/accounts_summary", async (req, res) => {
 });
 
 // get recent transactions
+
 app.get("/recent_transactions", async (req, res) => {
     try {
         const [rows] = await db.query(
@@ -173,4 +170,5 @@ app.post("/login", async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
