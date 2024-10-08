@@ -1,3 +1,4 @@
+--------------------------------------------------------User-------------------------------------------------------------------
 
 -- update user information
 DROP PROCEDURE IF EXISTS update_user_info;
@@ -26,10 +27,11 @@ END $$
 
 DELIMITER ;
 
+--------------------------------------------------------Transaction------------------------------------------------------------
 
 -- Withdraw funds from an account
 
-DROP PROCEDURE IF EXISTS WithdrawFunds;
+DROP PROCEDURE IF EXISTS withdraw_funds;
 
 DELIMITER $$
 
@@ -106,7 +108,7 @@ DELIMITER ;
 
 
 
-DROP PROCEDURE IF EXISTS DepositFunds;
+DROP PROCEDURE IF EXISTS deposit_funds;
 
 DELIMITER $$
 
@@ -124,7 +126,6 @@ BEGIN
     -- Declare a handler for any errors
     DECLARE EXIT HANDLER FOR SQLEXCEPTION 
     BEGIN
-        -- In case of an error, rollback the transaction
         ROLLBACK;
         SET result = 'Error occurred during deposit';
     END;
@@ -169,4 +170,183 @@ BEGIN
     END proc_exit;
 END $$
 
+DELIMITER ;
+
+--------------------------------------------------------Add new customer------------------------------------------------------------
+
+-- Function for generate a Account number
+DROP FUNCTION IF EXISTS generate_account_number;
+
+DELIMITER $$
+
+CREATE FUNCTION generate_account_number(acc_type ENUM('savings', 'checking')) 
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    DECLARE prefix CHAR(3);
+    DECLARE last_number INT;
+    DECLARE account_number CHAR(15);
+    DECLARE account_exists INT DEFAULT 1; -- Track if the account number exists
+
+    -- Determine the prefix based on account type
+    IF acc_type = 'savings' THEN
+        SET prefix = 'SAV';
+    ELSEIF acc_type = 'checking' THEN
+        SET prefix = 'CHK';
+    END IF;
+
+    -- Loop to generate a new account number until it is unique
+    WHILE account_exists = 1 DO
+        -- Generate the last number (simulate as a random 9-digit number)
+        SET last_number = FLOOR(100000000 + RAND() * 900000000); -- Generates a 9-digit number
+
+        -- Form the full account number
+        SET account_number = CONCAT(prefix, '-', last_number);
+
+        -- Check if the generated account number already exists in the account table
+        SELECT COUNT(*) INTO account_exists
+        FROM account
+        WHERE account_number = account_number;
+    END WHILE;
+
+    -- Return the unique account number
+    RETURN account_number;
+END$$
+
+DELIMITER ;
+
+
+-- Create a new account for a customer
+DROP PROCEDURE IF EXISTS create_account;
+
+DELIMITER $$
+CREATE PROCEDURE create_account(
+    IN customer_id INT,
+    IN branch_id INT,
+    IN account_type ENUM('savings', 'checking'),
+    OUT account_number CHAR(15)
+)
+
+BEGIN
+    DECLARE new_account_number CHAR(15);
+
+    -- Declare a handler for any errors
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        ROLLBACK;
+        SELECT 'Error occurred during account creation';
+    END;
+
+    START TRANSACTION;
+
+        -- Generate a new account number based on the account type
+        SET new_account_number = generate_account_number(account_type);
+
+        -- Insert the new account information into the account table
+        INSERT INTO account (account_type, account_number, customer_id, branch_id, balance, status)
+        VALUES (account_type, new_account_number, customer_id, branch_id, 0.00, 'active');
+
+        COMMIT;
+        SET account_number = new_account_number;
+
+END $$
+DELIMITER ;
+
+-- Add new individual customer
+DROP PROCEDURE IF EXISTS add_individual_customer;
+
+DELIMITER $$
+CREATE PROCEDURE add_individual_customer(
+    IN branch_id INT,
+    IN full_name VARCHAR(100),
+    IN date_of_birth DATE,
+    IN NIC VARCHAR(12),
+    IN address VARCHAR(255),
+    IN mobile_number VARCHAR(10),
+    IN landline_number VARCHAR(10),
+    IN account_type ENUM('savings', 'checking'),
+    OUT account_number CHAR(15)
+)
+
+BEGIN
+    DECLARE customer_id INT;
+
+    -- Declare a handler for any errors
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        -- In case of an error, rollback the transaction
+        ROLLBACK;
+        SELECT 'Error occurred during adding individual customer';
+    END;
+
+    START TRANSACTION;
+
+        -- Insert the customer information into customer table
+        INSERT INTO customer (customer_type, mobile_number, landline_number, address)
+        VALUES ('individual', mobile_number, landline_number, address);
+
+        -- Get the customer ID of the inserted customer
+        SET customer_id = LAST_INSERT_ID();
+
+        INSERT INTO individual (customer_id, full_name , date_of_birth, NIC)
+        VALUES (customer_id, full_name, date_of_birth, NIC);
+
+        -- create a account for the customer
+        CALL create_account(customer_id, branch_id, account_type, @account_number);
+
+
+        COMMIT;
+        -- If the transaction is successful, return the account number
+        SET account_number = @account_number; 
+
+END $$
+
+DELIMITER ;
+
+
+-- Add new organization customer
+DROP PROCEDURE IF EXISTS add_organization_customer;
+
+DELIMITER $$
+CREATE PROCEDURE add_organization_customer(
+    IN branch_id INT,
+    IN name VARCHAR(100),
+    IN license_number VARCHAR(100),
+    IN address VARCHAR(255),
+    IN mobile_number VARCHAR(10),
+    IN landline_number VARCHAR(10),
+    IN account_type ENUM('savings', 'checking'),
+    OUT account_number CHAR(15)
+)
+
+BEGIN
+    DECLARE customer_id INT;
+
+    -- Declare a handler for any errors
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Error occurred during adding organization customer';
+    END;
+
+    START TRANSACTION;
+
+        -- Insert the customer information into customer table
+        INSERT INTO customer (customer_type, mobile_number, landline_number, address)
+        VALUES ('organization', mobile_number, landline_number, address);
+
+        -- Get the customer ID of the inserted customer
+        SET customer_id = LAST_INSERT_ID();
+
+        INSERT INTO organization (customer_id, name, license_number)
+        VALUES (customer_id, name, license_number);
+
+        -- create a account for the customer
+        CALL create_account(customer_id, branch_id, account_type, @account_number);
+
+        COMMIT;
+        -- If the transaction is successful, return the account number
+        SET account_number = @account_number; 
+
+END $$
 DELIMITER ;
