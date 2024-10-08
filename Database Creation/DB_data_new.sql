@@ -38,7 +38,20 @@ INSERT INTO user (user_name, password, email, role) VALUES
 ('fiona_apple', 'hashed_password8', 'fiona.apple@email.com', 'customer'),
 ('george_clooney', 'hashed_password9', 'george.clooney@email.com', 'customer'),
 ('helen_mirren', 'hashed_password10', 'helen.mirren@email.com', 'customer'),
-('tom_smith', 'hashed_password11', 'tom.smith@email.com', 'staff');
+('tom_smith', 'hashed_password11', 'tom.smith@email.com', 'staff'),
+('robert_downey', 'hashed_password12', 'robert.downey@email.com', 'staff'),
+('scarlett_johansson', 'hashed_password13', 'scarlett.johansson@email.com', 'staff'),
+('chris_evans', 'hashed_password14', 'chris.evans@email.com', 'staff'),
+('mark_ruffalo', 'hashed_password15', 'mark.ruffalo@email.com', 'staff'),
+('julia_roberts', 'hashed_password16', 'julia.roberts@email.com', 'customer'),
+('brad_pitt', 'hashed_password17', 'brad.pitt@email.com', 'customer'),
+('angelina_jolie', 'hashed_password18', 'angelina.jolie@email.com', 'customer'),
+('morgan_freeman', 'hashed_password19', 'morgan.freeman@email.com', 'customer'),
+('meryl_streep', 'hashed_password20', 'meryl.streep@email.com', 'customer'),
+('leonardo_dicaprio', 'hashed_password21', 'leonardo.dicaprio@email.com', 'customer'),
+('jennifer_lawrence', 'hashed_password22', 'jennifer.lawrence@email.com', 'staff'),
+('matt_damon', 'hashed_password23', 'matt.damon@email.com', 'staff');
+
 
 
 -- Insert data into Staff table
@@ -47,7 +60,15 @@ INSERT INTO Staff (user_id, full_name, date_of_birth, NIC, role) VALUES
 (2, 'Jane Smith', '1985-09-20', '850920-5678', 'manager'),
 (3, 'Bob Johnson', '1990-03-10', '900310-9012', 'employee'),
 (4, 'Alice Williams', '1988-12-05', '881205-3456', 'employee'),
-(11, 'Tom Smith', '1988-11-15', '881115-3456', 'manager');
+
+(11, 'Tom Smith', '1988-11-15', '881115-3456', 'manager'),
+(12, 'Robert Downey', '1975-04-04', '750404-7890', 'employee'),
+(13, 'Scarlett Johansson', '1984-11-22', '841122-4567', 'employee'),
+(14, 'Chris Evans', '1981-06-13', '810613-1122', 'employee'),
+(15, 'Mark Ruffalo', '1967-11-22', '671122-3344', 'employee'),
+(22, 'Jennifer Lawrence', '1990-08-15', '900815-9988', 'employee'),
+(23, 'Matt Damon', '1970-10-08', '701008-5566', 'employee');
+
 
 -- Insert data into customer table
 INSERT INTO customer (user_id, customer_type, mobile_number, landline_number, address) VALUES
@@ -56,7 +77,15 @@ INSERT INTO customer (user_id, customer_type, mobile_number, landline_number, ad
 (7, 'organization', '3456789012', '0345678901', '789 Oak St, Village'),
 (8, 'individual', '4567890123', '0456789012', '321 Pine St, County'),
 (9, 'organization', '5678901234', '0567890123', '654 Maple St, State'),
-(10, 'individual', '6789012345', '0678901234', '987 Cedar St, Country');
+
+(10, 'individual', '6789012345', '0678901234', '987 Cedar St, Country'),
+(16, 'individual', '7890123456', '0789012345', '101 Fir St, Region'),
+(17, 'individual', '8901234567', '0890123456', '202 Birch St, City'),
+(18, 'individual', '9012345678', '0901234567', '303 Spruce St, Town'),
+(19, 'organization', '0123456789', '0012345678', '404 Redwood St, Village'),
+(20, 'individual', '1234567891', '0123456790', '505 Willow St, County'),
+(21, 'individual', '2345678910', '0234567891', '606 Cypress St, State');
+
 
 -- Insert data into organization table
 INSERT INTO organization (customer_id, name, license_number) VALUES

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TextField, Button, Switch, FormControlLabel, Typography, Grid, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -223,8 +224,10 @@ const Settings = () => {
             </Button>
         </DialogActions>
       </Dialog>
+
     </div>
   );
 };
 
 export default Settings;
+
