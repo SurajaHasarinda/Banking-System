@@ -6,16 +6,16 @@ DELIMITER $$
 CREATE PROCEDURE approve_loan(IN input_loan_id INT, IN manager_user_id INT)
 BEGIN
     DECLARE loan_status VARCHAR(20);
-    
-    START TRANSACTION;
 
     IF is_manager(manager_user_id) THEN
+		START TRANSACTION;
         SELECT status INTO loan_status FROM loan WHERE loan_id = input_loan_id;
 
         IF loan_status = 'pending' THEN
             UPDATE loan
             SET status = 'approved'
             WHERE loan_id = input_loan_id;
+            COMMIT;
         ELSE
 			ROLLBACK;
             SIGNAL SQLSTATE '45000'
