@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom'; // Add this import
 import UserDashboard from './components/user/dashboard/UserDashboard';
 import UserLogin from './components/Login/UserLogin';
 import SignUp from './components/Login/SignUp';
