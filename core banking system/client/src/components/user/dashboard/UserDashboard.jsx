@@ -12,19 +12,16 @@ import { logout } from '../../../services/auth';
 import './UserDashboard.css';
 import Notification from './notification/Notification';
 import Home from '../home/Home';
-<<<<<<< HEAD
-import MoneyTransfer1 from '../MoneyTransfer/MoneyTransfer1';
+import MoneyTransfer from '../MoneyTransfer/MoneyTransfer1';
 
-=======
 import AccountDetails from '../account-details/AccountDetails';
-import MoneyTransfer from '../money-transfer/MoneyTransfer';
+//import MoneyTransfer from '../money-transfer/MoneyTransfer';
 import TransactionHistory from '../transaction-history/TransactionHistory';
 import Loans from '../loans/Loans';
 import ApplyLoan from '../loans/ApplyLoan';
 import LoanPayment from '../loans/LoanPayment';
 import LoanDetails from '../loans/LoanDetails';
 import Settings from '../settings/Settings';
->>>>>>> 8602410fa1591e06335630ad6e49555dc4349342
 
 const DashboardSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true);
@@ -76,44 +73,6 @@ const DashboardSidebar = () => {
         <div className="menu-bar">
           <div className="menu">
             <ul className="menu-links">
-<<<<<<< HEAD
-              <li className="nav-link">
-                <Link to="/home">
-                    <FontAwesomeIcon icon={faHouseUser} className='icon'/>
-                    <span className="text nav-text">Home</span>
-                </Link>
-              </li>
-
-              <li className="nav-link">
-                <Link to="/home">
-                    <FontAwesomeIcon icon={faWallet} className='icon'/>
-                    <span className="text nav-text">Account Details</span>
-                </Link>
-              </li>
-
-              <li className="nav-link">
-                <Link to="Money-transfer">
-                    <FontAwesomeIcon icon={faMoneyBillTransfer} className='icon'/>
-                    <span className="text nav-text">Money Transfer</span>
-                </Link>
-              </li>
-
-              <li className="nav-link">
-                <a href="#">
-                    <FontAwesomeIcon icon={faClockRotateLeft} className='icon'/>
-                    <span className="text nav-text">Transaction History</span>
-                </a>
-              </li>
-
-              <li className="nav-link">
-                <a href="#">
-                    <FontAwesomeIcon icon={faSackDollar} className='icon'/>
-                    <span className="text nav-text">Loans</span>
-                </a>
-              </li>
-
-
-=======
               {menuItems.map((item, index) => (
                 <li className="nav-link" key={index}>
                   <Link to={item.path} onClick={()=>navigate(item.path)}>
@@ -133,7 +92,6 @@ const DashboardSidebar = () => {
                   )}
                 </li>
               ))}
->>>>>>> 8602410fa1591e06335630ad6e49555dc4349342
             </ul>
           </div>
 
@@ -167,11 +125,6 @@ const DashboardSidebar = () => {
         </div>
 
         <Routes>
-<<<<<<< HEAD
-            <Route path="/home" element={<Home />} />
-            <Route path="/Money-transfer" element={<MoneyTransfer1 />} />
-            {/* Add other routes here */}
-=======
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
           <Route path="account-details" element={<AccountDetails />} />
@@ -183,7 +136,6 @@ const DashboardSidebar = () => {
             <Route path="details" element={<LoanDetails />} />
           </Route>
           <Route path="settings" element={<Settings />} />
->>>>>>> 8602410fa1591e06335630ad6e49555dc4349342
         </Routes>
       </section>
     </div>
