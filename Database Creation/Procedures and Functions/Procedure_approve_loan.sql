@@ -32,4 +32,3 @@ END$$
 DELIMITER ;
 
 
-CALL approve_loan(1, 3);

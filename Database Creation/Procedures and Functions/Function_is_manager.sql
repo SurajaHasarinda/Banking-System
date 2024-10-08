@@ -1,3 +1,4 @@
+use bank_database;
 DELIMITER $$
 
 DROP FUNCTION IF EXISTS is_manager;

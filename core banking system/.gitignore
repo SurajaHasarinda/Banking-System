@@ -1,0 +1,14 @@
+# Ignore .env file
+.env
+backend/.env
+
+# Ignore node_modules
+node_modules/
+
+# Ignore package-lock.json
+
+
+# Ignore debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*package-lock.json
