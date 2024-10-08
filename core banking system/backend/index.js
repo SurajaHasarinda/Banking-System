@@ -66,6 +66,7 @@ app.get("/accounts_summary", async (req, res) => {
 });
 
 // get recent transactions
+
 app.get("/recent_transactions", async (req, res) => {
     try {
         const [rows] = await db.query(
@@ -167,4 +168,5 @@ app.post("/login", async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
